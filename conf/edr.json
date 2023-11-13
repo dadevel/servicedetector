@@ -1,6 +1,16 @@
 {
   "products": [
     {
+      "name": "Acronis Cyber Protect Active Protection",
+      "services": [
+        {
+          "name": "AcronisActiveProtectionService",
+          "description": "Acronis Active Protection Service"
+        }
+      ],
+      "pipes": []
+    },
+    {
       "name": "Bitdefender",
       "services": [
         {
@@ -93,22 +103,77 @@
       ]
     },
     {
-      "name": "Windows Defender",
+      "name": "Carbon Black",
       "services": [
         {
-          "name": "WinDefend",
-          "description": "Windows Defender Antivirus Service"
+          "name": "CbDefense",
+          "description": "Carbon Black Cloud Sensor service"
         },
         {
-          "name": "Sense",
-          "description": "Windows Defender Advanced Threat Protection Service"
-        },
-        {
-          "name": "WdNisSvc",
-          "description": "Windows Defender Antivirus Network Inspection Service"
+          "name": "CbDefenseWSC",
+          "description": "Carbon Black Cloud Sensor WSC service"
         }
       ],
       "pipes": []
+    },
+    {
+      "name": "Carbon Black App Control",
+      "services": [
+        {
+          "name": "Parity",
+          "description": "Carbon Black App Control Agent"
+        }
+      ],
+      "pipes": []
+    },
+    {
+      "name": "CrowdStrike",
+      "services": [
+        {
+          "name": "CSFalconService",
+          "description": "CrowdStrike Falcon Sensor Service"
+        }
+      ],
+      "pipes": [
+        {
+          "name": "CrowdStrike\\{*",
+          "processes": [
+            "CSFalconContainer.exe",
+            "CSFalconService.exe"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cybereason",
+      "services": [
+        {
+          "name": "CybereasonActiveProbe",
+          "description": "Cybereason Active Probe"
+        },
+        {
+          "name": "CybereasonCRS",
+          "description": "Cybereason Anti-Ransomware"
+        },
+        {
+          "name": "CybereasonBlocki",
+          "description": "Cybereason Execution Prevention"
+        }
+      ],
+      "pipes": [
+        {
+          "name": "CybereasonAPConsoleMinionHostIpc_*",
+          "processes": [
+            "minionhost.exe"
+          ]
+        },
+        {
+          "name": "CybereasonAPServerProxyIpc_*",
+          "processes": [
+            "minionhost.exe"
+          ]
+        }
+      ]
     },
     {
       "name": "ESET",
@@ -144,19 +209,86 @@
       ]
     },
     {
-      "name": "CrowdStrike",
+      "name": "G DATA Security Client",
       "services": [
         {
-          "name": "CSFalconService",
-          "description": "CrowdStrike Falcon Sensor Service"
+          "name": "AVKWCtl",
+          "description": "Anti-virus Kit Window Control"
+        },
+        {
+          "name": "AVKProxy",
+          "description": "G Data AntiVirus Proxy Service"
+        },
+        {
+          "name": "GDScan",
+          "description": "GDSG Data AntiVirus Scan Service"
         }
       ],
       "pipes": [
         {
-          "name": "CrowdStrike\\{*",
+          "name": "exploitProtectionIPC",
           "processes": [
-            "CSFalconContainer.exe",
-            "CSFalconService.exe"
+            "AVKWCtlx64.exe"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Kaspersky Security for Windows Server",
+      "services": [
+        {
+          "name": "kavfsslp",
+          "description": "Kaspersky Security Exploit Prevention Service"
+        },
+        {
+          "name": "KAVFS",
+          "description": "Kaspersky Security Service"
+        },
+        {
+          "name": "KAVFSGT",
+          "description": "Kaspersky Security Management Service"
+        },
+        {
+          "name": "klnagent",
+          "description": "Kaspersky Security Center"
+        }
+      ],
+      "pipes": [
+        {
+          "name": "Exploit_Blocker",
+          "processes": [
+            "kavfswh.exe"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Panda Adaptive Defense 360",
+      "services": [
+        {
+          "name": "PandaAetherAgent",
+          "description": "Panda Endpoint Agent"
+        },
+        {
+          "name": "PSUAService",
+          "description": "Panda Product Service"
+        },
+        {
+          "name": "NanoServiceMain",
+          "description": "Panda Cloud Antivirus Service"
+        }
+      ],
+      "pipes": [
+        {
+          "name": "NNS_API_IPC_SRV_ENDPOINT",
+          "processes": [
+            "PSANHost.exe"
+          ]
+        },
+        {
+          "name": "PSANMSrvcPpal",
+          "processes": [
+            "PSUAService.exe"
           ]
         }
       ]
@@ -199,137 +331,6 @@
       ]
     },
     {
-      "name": "Carbon Black App Control",
-      "services": [
-        {
-          "name": "Parity",
-          "description": "Carbon Black App Control Agent"
-        }
-      ],
-      "pipes": []
-    },
-    {
-      "name": "Cybereason",
-      "services": [
-        {
-          "name": "CybereasonActiveProbe",
-          "description": "Cybereason Active Probe"
-        },
-        {
-          "name": "CybereasonCRS",
-          "description": "Cybereason Anti-Ransomware"
-        },
-        {
-          "name": "CybereasonBlocki",
-          "description": "Cybereason Execution Prevention"
-        }
-      ],
-      "pipes": [
-        {
-          "name": "CybereasonAPConsoleMinionHostIpc_*",
-          "processes": [
-            "minionhost.exe"
-          ]
-        },
-        {
-          "name": "CybereasonAPServerProxyIpc_*",
-          "processes": [
-            "minionhost.exe"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Kaspersky Security for Windows Server",
-      "services": [
-        {
-          "name": "kavfsslp",
-          "description": "Kaspersky Security Exploit Prevention Service"
-        },
-        {
-          "name": "KAVFS",
-          "description": "Kaspersky Security Service"
-        },
-        {
-          "name": "KAVFSGT",
-          "description": "Kaspersky Security Management Service"
-        },
-        {
-          "name": "klnagent",
-          "description": "Kaspersky Security Center"
-        }
-      ],
-      "pipes": [
-        {
-          "name": "Exploit_Blocker",
-          "processes": [
-            "kavfswh.exe"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Trend Micro Endpoint Security",
-      "services": [
-        {
-          "name": "Trend Micro Endpoint Basecamp",
-          "description": "Trend Micro Endpoint Basecamp"
-        },
-        {
-          "name": "TMBMServer",
-          "description": "Trend Micro Unauthorized Change Prevention Service"
-        },
-        {
-          "name": "Trend Micro Web Service Communicator",
-          "description": "Trend Micro Web Service Communicator"
-        },
-        {
-          "name": "TMiACAgentSvc",
-          "description": "Trend Micro Application Control Service (Agent)"
-        },
-        {
-          "name": "CETASvc",
-          "description": "Trend Micro Cloud Endpoint Telemetry Service"
-        },
-        {
-          "name": "iVPAgent",
-          "description": "Trend Micro Vulnerability Protection Service (Agent)"
-        }
-      ],
-      "pipes": [
-        {
-          "name": "IPC_XBC_XBC_AGENT_PIPE_*",
-          "processes": [
-            "EndpointBasecamp.exe"
-          ]
-        },
-        {
-          "name": "iacagent_*",
-          "processes": [
-            "TMiACAgentSvc.exe"
-          ]
-        },
-        {
-          "name": "OIPC_LWCS_PIPE_*",
-          "processes": [
-            "TmListen.exe"
-          ]
-        },
-        {
-          "name": "Log_ServerNamePipe",
-          "processes": [
-            "LogServer.exe"
-          ]
-        },
-        {
-          "name": "OIPC_NTRTSCAN_PIPE_*",
-          "processes": [
-            "Ntrtscan.exe"
-          ]
-        }
-      ]
-    },
-    {
       "name": "Symantec Endpoint Protection",
       "services": [
         {
@@ -343,34 +344,6 @@
         {
           "name": "SNAC",
           "description": "Symantec Network Access Control"
-        }
-      ],
-      "pipes": []
-    },
-    {
-      "name": "Carbon Black",
-      "services": [
-        {
-          "name": "CbDefense",
-          "description": "Carbon Black Cloud Sensor service"
-        },
-        {
-          "name": "CbDefenseWSC",
-          "description": "Carbon Black Cloud Sensor WSC service"
-        }
-      ],
-      "pipes": []
-    },
-    {
-      "name": "SysMon",
-      "services": [
-        {
-          "name": "Sysmon64",
-          "description": "System Monitor service"
-        },
-        {
-          "name": "Sysmon",
-          "description": "System Monitor service"
         }
       ],
       "pipes": []
@@ -443,57 +416,76 @@
       ]
     },
     {
-      "name": "G DATA Security Client",
+      "name": "SysMon",
       "services": [
         {
-          "name": "AVKWCtl",
-          "description": "Anti-virus Kit Window Control"
+          "name": "Sysmon64",
+          "description": "System Monitor service"
         },
         {
-          "name": "AVKProxy",
-          "description": "G Data AntiVirus Proxy Service"
-        },
-        {
-          "name": "GDScan",
-          "description": "GDSG Data AntiVirus Scan Service"
+          "name": "Sysmon",
+          "description": "System Monitor service"
         }
       ],
-      "pipes": [
-        {
-          "name": "exploitProtectionIPC",
-          "processes": [
-            "AVKWCtlx64.exe"
-          ]
-        }
-      ]
+      "pipes": []
     },
     {
-      "name": "Panda Adaptive Defense 360",
+      "name": "Trend Micro Endpoint Security",
       "services": [
         {
-          "name": "PandaAetherAgent",
-          "description": "Panda Endpoint Agent"
+          "name": "Trend Micro Endpoint Basecamp",
+          "description": "Trend Micro Endpoint Basecamp"
         },
         {
-          "name": "PSUAService",
-          "description": "Panda Product Service"
+          "name": "TMBMServer",
+          "description": "Trend Micro Unauthorized Change Prevention Service"
         },
         {
-          "name": "NanoServiceMain",
-          "description": "Panda Cloud Antivirus Service"
+          "name": "Trend Micro Web Service Communicator",
+          "description": "Trend Micro Web Service Communicator"
+        },
+        {
+          "name": "TMiACAgentSvc",
+          "description": "Trend Micro Application Control Service (Agent)"
+        },
+        {
+          "name": "CETASvc",
+          "description": "Trend Micro Cloud Endpoint Telemetry Service"
+        },
+        {
+          "name": "iVPAgent",
+          "description": "Trend Micro Vulnerability Protection Service (Agent)"
         }
       ],
       "pipes": [
         {
-          "name": "NNS_API_IPC_SRV_ENDPOINT",
+          "name": "IPC_XBC_XBC_AGENT_PIPE_*",
           "processes": [
-            "PSANHost.exe"
+            "EndpointBasecamp.exe"
           ]
         },
         {
-          "name": "PSANMSrvcPpal",
+          "name": "iacagent_*",
           "processes": [
-            "PSUAService.exe"
+            "TMiACAgentSvc.exe"
+          ]
+        },
+        {
+          "name": "OIPC_LWCS_PIPE_*",
+          "processes": [
+            "TmListen.exe"
+          ]
+        },
+        {
+          "name": "Log_ServerNamePipe",
+          "processes": [
+            "LogServer.exe"
+          ]
+        },
+        {
+          "name": "OIPC_NTRTSCAN_PIPE_*",
+          "processes": [
+            "Ntrtscan.exe"
           ]
         }
       ]
@@ -512,6 +504,24 @@
         {
           "name": "WRSVC",
           "description": "Webroot SecureAnywhere Endpoint Protection"
+        }
+      ],
+      "pipes": []
+    },
+    {
+      "name": "Windows Defender",
+      "services": [
+        {
+          "name": "WinDefend",
+          "description": "Windows Defender Antivirus Service"
+        },
+        {
+          "name": "Sense",
+          "description": "Windows Defender Advanced Threat Protection Service"
+        },
+        {
+          "name": "WdNisSvc",
+          "description": "Windows Defender Antivirus Network Inspection Service"
         }
       ],
       "pipes": []
