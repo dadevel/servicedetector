@@ -5,20 +5,18 @@
       "services": [
         {
           "name": "WebClient",
-          "description": "WebClient Service"
+          "description": "WebClient Service (stopped?)"
         }
       ],
       "pipes": [
         {
           "name": "DAV RPC SERVICE",
-          "processes": [
-            "svchost.exe"
-          ]
+          "processes": []
         }
       ]
     },
     {
-      "name": "Spooler",
+      "name": "Print Spooler",
       "services": [
         {
           "name": "Spooler",
@@ -28,9 +26,7 @@
       "pipes": [
         {
           "name": "spoolss",
-          "processes": [
-            ""
-          ]
+          "processes": []
         }
       ]
     }

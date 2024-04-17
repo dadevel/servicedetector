@@ -7,8 +7,7 @@
           "name": "AcronisActiveProtectionService",
           "description": "Acronis Active Protection Service"
         }
-      ],
-      "pipes": []
+      ]
     },
     {
       "name": "Bitdefender",
@@ -113,8 +112,7 @@
           "name": "CbDefenseWSC",
           "description": "Carbon Black Cloud Sensor WSC service"
         }
-      ],
-      "pipes": []
+      ]
     },
     {
       "name": "Carbon Black App Control",
@@ -123,8 +121,7 @@
           "name": "Parity",
           "description": "Carbon Black App Control Agent"
         }
-      ],
-      "pipes": []
+      ]
     },
     {
       "name": "CrowdStrike",
@@ -345,8 +342,7 @@
           "name": "SNAC",
           "description": "Symantec Network Access Control"
         }
-      ],
-      "pipes": []
+      ]
     },
     {
       "name": "Sophos Intercept X",
@@ -426,8 +422,7 @@
           "name": "Sysmon",
           "description": "System Monitor service"
         }
-      ],
-      "pipes": []
+      ]
     },
     {
       "name": "Trend Micro Endpoint Security",
@@ -505,8 +500,7 @@
           "name": "WRSVC",
           "description": "Webroot SecureAnywhere Endpoint Protection"
         }
-      ],
-      "pipes": []
+      ]
     },
     {
       "name": "Windows Defender",
@@ -523,8 +517,7 @@
           "name": "WdNisSvc",
           "description": "Windows Defender Antivirus Network Inspection Service"
         }
-      ],
-      "pipes": []
+      ]
     }
   ]
 }

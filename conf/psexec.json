@@ -1,6 +1,15 @@
 {
   "products": [
     {
+      "name": "Sysinternals PsExec",
+      "services": [
+        {
+          "name": "PSEXESVC",
+          "description": ""
+        }
+      ]
+    },
+    {
       "name": "Impacket PsExec",
       "services": [],
       "pipes": [

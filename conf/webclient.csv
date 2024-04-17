@@ -1,4 +1,0 @@
-WebClient;service;WebClient;WebClient Service
-WebClient;pipe;DAV RPC SERVICE;svchost.exe
-Spooler;service;Spooler;Print Spooler
-Spooler;pipe;spoolss;

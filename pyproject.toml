@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "servicedetector"
+version = "0.0.1"
+description = ""
+authors = ["dadevel <dadevel@disroot.org>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "servicedetector"}]
+
+[tool.poetry.scripts]
+servicedetector = "servicedetector.main:main"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+impacket = "^0.11.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
