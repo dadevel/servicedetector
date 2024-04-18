@@ -1,6 +1,6 @@
 # ServiceDetector
 
-Detects named pipes and installed services without local admin privileges.
+Detects named pipes and installed services remotely as unprivileged user.
 Heavily based on [tothi/servicedetector](https://github.com/tothi/servicedetector).
 
 # Setup
@@ -19,13 +19,12 @@ pip3 install git+https://github.com/dadevel/servicedetector.git@main
 
 # Usage
 
-Detect named pipes and services.
+Scan multiple servers for installed AV/EDR products.
+Service names and named pipes are defined in JSON files in the [./conf](./conf) directory.
 
 ~~~ bash
-servicedetector -config ./conf/software.json jdoe:'passw0rd'@ws01.corp.local
+servicedetector -c ./conf/edr.json -u jdoe -p 'passw0rd' srv01.corp.local srv02.corp.local srv03.corp.local
 ~~~
-
-Service names and named pipe paths are defined in JSON files in the [./conf](./conf) directory.
 
 # About
 

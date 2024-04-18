@@ -1,21 +1,26 @@
 #!/usr/bin/env python3
 from typing import Any
 
+from argparse import ArgumentParser, BooleanOptionalAction, Namespace
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import PurePath
-from argparse import ArgumentParser, Namespace
+import functools
 import json
 import logging
+import os
 import sys
+import threading
+import traceback
 
 from impacket.dcerpc.v5 import lsad, lsat
 from impacket.dcerpc.v5.transport import DCERPCTransportFactory, DCERPC_v5, SMBTransport
 from impacket.dcerpc.v5.dtypes import NULL, MAXIMUM_ALLOWED, RPC_UNICODE_STRING
 from impacket.dcerpc.v5.lsat import DCERPCSessionError
-from impacket.examples.utils import parse_target
-from impacket.krb5.keytab import Keytab
 from impacket.smbconnection import SMBConnection
 
 SOCKET_TIMEOUT = 5
+
+local = threading.local()
 
 
 class LsaClient():
@@ -65,8 +70,8 @@ class LsaClient():
         return resp
 
 
-def detect_services(opts: Namespace) -> None:
-    lsa_client = LsaClient(opts.domain, opts.username, opts.password, opts.host, opts.k, opts.dc_ip, opts.lmhash, opts.nthash)
+def detect_services(host: str, opts: Namespace) -> None:
+    lsa_client = LsaClient(opts.domain, opts.user, opts.password, host, opts.kerberos, opts.dc_ip, opts.lmhash, opts.nthash)
     lsa_client.connect()
     policy_handle = lsa_client.open_policy()
 
@@ -74,84 +79,110 @@ def detect_services(opts: Namespace) -> None:
         for service in product.get('services', ()):
             try:
                 lsa_client.lookup_name(policy_handle, service['name'])
-                print(json.dumps(dict(host=opts.host, product=product['name'], service=service['name'], description=service['description'])))
+                local.log(product=product['name'], service=service['name'], description=service['description'])
             except DCERPCSessionError as e:
                 if e.error_code != 0xc0000073:  # STATUS_NONE_MAPPED
                     raise e
 
 
-def detect_named_pipes(opts: Namespace) -> None:
-    smb_client = SMBConnection(opts.host, opts.host)
-    if opts.k:
-        smb_client.kerberosLogin(opts.username, opts.password, opts.domain, opts.lmhash, opts.nthash, opts.aeskey, opts.dc_ip)
+def detect_named_pipes(host: str, opts: Namespace) -> None:
+    smb_client = SMBConnection(host, host)
+    if opts.kerberos:
+        smb_client.kerberosLogin(opts.user, opts.password, opts.domain, opts.lmhash, opts.nthash, opts.aeskey, opts.dc_ip)
     else:
-        smb_client.login(opts.username, opts.password, opts.domain, opts.lmhash, opts.nthash)
+        smb_client.login(opts.user, opts.password, opts.domain, opts.lmhash, opts.nthash)
 
     for file in smb_client.listPath('IPC$', '\\*'):
         pipepath = file.get_longname()
         if opts.debug:
-            print(json.dumps(dict(host=opts.host, pipe=pipepath)))
+            local.log(pipe=pipepath)
         for product in opts.configdata['products']:
             for pipe in product.get('pipes', ()):
                 if PurePath(pipepath).match(pipe['name']):
-                    print(json.dumps(dict(host=opts.host, product=product['name'], pipe=pipepath, processes=pipe['processes'])))
+                    local.log(product=product['name'], pipe=pipepath, processes=pipe['processes'])
+
+
+def run_detections(host: str, opts: Namespace) -> bool:
+    local.log = functools.partial(log, host=host)
+    try:
+        detect_services(host, opts)
+    except OSError as e:
+        local.log(error=str(e.strerror))
+        return False
+    except Exception as e:
+        local.log(error=str(e))
+        if opts.debug:
+            traceback.print_exception(e, file=sys.stderr)
+        return False
+
+    try:
+        detect_named_pipes(host, opts)
+    except OSError as e:
+        local.log(error=str(e.strerror))
+        return False
+    except Exception as e:
+        local.log(error=str(e))
+        if opts.debug:
+            traceback.print_exception(e, file=sys.stderr)
+        return False
+
+    return True
+
+
+def log(**kwargs: Any) -> None:
+    print(json.dumps(kwargs, sort_keys=False), file=sys.stderr)
 
 
 def main() -> None:
-    parser = ArgumentParser(description='Detects named pipes and installed services without local admin privileges.')
-    parser.add_argument('target', action='store', help='[[DOMAIN/]USERNAME[:PASSWORD]@]HOST')
-    parser.add_argument('-debug', action='store_true', help='Enable debug output')
-    parser.add_argument('-config', action='store', required=True, metavar='PATH', help='JSON config defining services and named pipes')
+    entrypoint = ArgumentParser(description='Detects named pipes and installed services without local admin privileges.')
+    entrypoint.add_argument('--threads', type=int, default=min((os.cpu_count() or 1) * 4, 16), metavar='UINT', help='default: based on CPU cores')
+    entrypoint.add_argument('--debug', action=BooleanOptionalAction, default=False)
+    entrypoint.add_argument('-c', '--config', action='store', required=True, metavar='PATH', help='JSON config defining services and named pipes')
+    entrypoint.add_argument('hosts', nargs='+', metavar='HOST')
 
-    group = parser.add_argument_group('authentication')
-    group.add_argument('-hashes', action='store', metavar='[LMHASH]:NTHASH', help='Pass the hash')
-    group.add_argument('-k', action='store_true', help='Use Kerberos authentication, tries to grab credentials from $KRB5CCNAME')
-    group.add_argument('-aeskey', action='store', metavar='HEXKEY', help='Pass the key')
-    group.add_argument('-keytab', action='store', metavar='PATH', help='Read keys for SPN from keytab')
-    group.add_argument('-no-pass', action='store_true', help='Do not ask for password')
+    auth = entrypoint.add_argument_group('auth')
+    auth.add_argument('-d', '--domain', default='', metavar='DOMAIN')
+    auth.add_argument('-u', '--user', default='', metavar='USERNAME')
+    authsecret = auth.add_mutually_exclusive_group()
+    authsecret.add_argument('-p', '--password', default='', metavar='PASSWORD')
+    authsecret.add_argument('-H', '--hashes', default='', metavar='[LMHASH:]NTHASH', help='authenticate via (over)pass the hash')
+    authsecret.add_argument('-a', '--aes-key', default='', metavar='HEXKEY', help='authenticate via pass the key')
+    auth.add_argument('-k', '--kerberos', action=BooleanOptionalAction, default=False, help='use Kerberos instead of NTLM')
+    auth.add_argument('--dc-ip', action='store', metavar='FQDN|IPADDRESS', help='FQDN or IP of a domain controller, default: value of -d')
 
-    group = parser.add_argument_group('connection')
-    group.add_argument('-dc-ip', action='store', metavar='IPADDRESS', help='IP address of domain controller')
-    group.add_argument('-target-ip', action='store', metavar='IPADDRESS', help='IP Address of target machine')
-
-    opts = parser.parse_args()
-
-    if opts.hashes is not None:
-        opts.lmhash, opts.nthash = opts.hashes.split(':')
-    else:
-        opts.lmhash, opts.nthash = '', ''
+    opts = entrypoint.parse_args()
 
     logging.basicConfig(stream=sys.stderr, level=logging.DEBUG if opts.debug else logging.ERROR)
-    opts.domain, opts.username, opts.password, opts.host = parse_target(opts.target)
 
-    if not opts.target_ip:
-        opts.target_ip = opts.host
+    opts.hosts = set(opts.hosts)
 
-    if not opts.domain:
-        opts.domain = ''
+    if not opts.kerberos and not opts.password and not opts.hashes and not opts.aes_key:
+        log(error='no authentication secret given')
+        exit(1)
 
-    if opts.keytab:
-        Keytab.loadKeysFromKeytab(opts.keytab, opts.username, opts.domain, opts)
-        opts.k = True
+    if ':' in opts.hashes:
+        opts.lmhash, opts.nthash = opts.hashes.split(':', maxsplit=1)
+    else:
+        opts.lmhash, opts.nthash = '', opts.hashes
 
-    if not opts.password and opts.username and not opts.hashes and not opts.no_pass and not opts.aeskey:
+    if opts.aes_key:
+        opts.kerberos = True
+
+    if not opts.password and opts.user and not opts.hashes and not opts.no_pass and not opts.aeskey:
         from getpass import getpass
         opts.password = getpass('password:')
-
-    if opts.aeskey:
-        opts.k = True
 
     with open(opts.config, 'r') as file:
         opts.configdata = json.load(file)
 
-    try:
-        detect_services(opts)
-    except Exception as e:
-        logging.exception(e)
-    try:
-        detect_named_pipes(opts)
-    except Exception as e:
-        logging.exception(e)
+    successes, failures = 0, 0
+    with ThreadPoolExecutor(max_workers=opts.threads) as pool:
+        for result in pool.map(functools.partial(run_detections, opts=opts), opts.hosts):
+            if result:
+                successes += 1
+            else:
+                failures += 1
+    exit(1 if failures else 0)
 
 
 if __name__ == '__main__':
