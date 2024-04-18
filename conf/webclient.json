@@ -2,12 +2,6 @@
   "products": [
     {
       "name": "WebClient",
-      "services": [
-        {
-          "name": "WebClient",
-          "description": "WebClient Service (stopped?)"
-        }
-      ],
       "pipes": [
         {
           "name": "DAV RPC SERVICE",
@@ -17,12 +11,6 @@
     },
     {
       "name": "Print Spooler",
-      "services": [
-        {
-          "name": "Spooler",
-          "description": "Print Spooler"
-        }
-      ],
       "pipes": [
         {
           "name": "spoolss",

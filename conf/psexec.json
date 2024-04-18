@@ -2,22 +2,19 @@
   "products": [
     {
       "name": "Sysinternals PsExec",
-      "services": [
+      "pipes": [
         {
-          "name": "PSEXESVC",
-          "description": ""
+          "name": "psexesvc",
+          "processes": []
         }
       ]
     },
     {
       "name": "Impacket PsExec",
-      "services": [],
       "pipes": [
         {
           "name": "RemCom_*",
-          "processes": [
-            ""
-          ]
+          "processes": []
         }
       ]
     }
