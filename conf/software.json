@@ -40,6 +40,19 @@
       ]
     },
     {
+      "name": "SCCM Agent",
+      "services": [
+        {
+          "name": "smstsmgr",
+          "description": "ConfigMgr Task Sequence Agent"
+        },
+        {
+          "name": "CmRcService",
+          "description": "ConfigMgr Remote Control"
+        }
+      ]
+    },
+    {
       "name": "Azure SSO",
       "services": [
         {

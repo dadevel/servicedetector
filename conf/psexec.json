@@ -4,8 +4,20 @@
       "name": "Sysinternals PsExec",
       "pipes": [
         {
-          "name": "psexesvc",
-          "processes": []
+          "name": "PSEXESVC",
+          "processes": ["psexecsvc.exe"]
+        },
+        {
+          "name": "PSEXESVC-*-stdin",
+          "processes": ["psexecsvc.exe"]
+        },
+        {
+          "name": "PSEXESVC-*-stdout",
+          "processes": ["psexecsvc.exe"]
+        },
+        {
+          "name": "PSEXESVC-*-stderr",
+          "processes": ["psexecsvc.exe"]
         }
       ]
     },

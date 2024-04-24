@@ -149,12 +149,28 @@
           "description": "Cybereason Active Probe"
         },
         {
-          "name": "CybereasonCRS",
-          "description": "Cybereason Anti-Ransomware"
+          "name": "CybereasonAntiMalware",
+          "description": "Cybereason Anti-Malware"
         },
         {
           "name": "CybereasonBlocki",
           "description": "Cybereason Execution Prevention"
+        },
+        {
+          "name": "CybereasonCRS",
+          "description": "Cybereason Anti-Ransomware"
+        },
+        {
+          "name": "CybereasonNnx",
+          "description": "Cybereason NNX"
+        },
+        {
+          "name": "CybereasonTI",
+          "description": "Cybereason Threat Intelligence"
+        },
+        {
+          "name": "CybereasonWsclf",
+          "description": "Cybereason WSC Interface"
         }
       ],
       "pipes": [
