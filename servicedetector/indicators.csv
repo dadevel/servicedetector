@@ -1,0 +1,143 @@
+category,product,type,value
+coercion,Print Spooler,pipe,spoolss
+coercion,WebClient,pipe,DAV RPC SERVICE
+epp,Acronis Active Protection,service,AcronisActiveProtectionService
+epp,Bitdefender,pipe,etw_sensor_pipe_ppl
+epp,Bitdefender,pipe,local\msgbus\antitracker.low\*
+epp,Bitdefender,pipe,local\msgbus\aspam.actions.low\*
+epp,Bitdefender,pipe,local\msgbus\bdagent*
+epp,Bitdefender,pipe,local\msgbus\bdauxsrv
+epp,Bitdefender,pipe,local\msgbus\bd.process.broker.pipe
+epp,Bitdefender,pipe,\bdConnector\ServiceControl\EPSecurityService.exe
+epp,Bitdefender,process,EPConsole.exe
+epp,Bitdefender,process,EPProtectedService.exe
+epp,Bitdefender,process,bdagent.exe
+epp,Bitdefender,process,bdntwrk.exe
+epp,Bitdefender,process,bdservicehost.exe
+epp,Bitdefender,process,updatesrv.exe
+epp,Bitdefender,service,BDAuxSrv
+epp,Bitdefender,service,EPIntegrationService
+epp,Bitdefender,service,EPProtectedService
+epp,Bitdefender,service,EPRedline
+epp,Bitdefender,service,EPSecurityService
+epp,Bitdefender,service,EPUpdateService
+epp,Bitdefender,service,UPDATESRV
+epp,Bitdefender,service,VSSERV
+epp,Bitdefender,service,bdredline
+epp,Bitdefender,service,bdredline_agent
+epp,Carbon Black App Control,service,Parity
+epp,Carbon Black,service,CbDefenseWSC
+epp,Carbon Black,service,CbDefense
+epp,CrowdStrike,pipe,CrowdStrike\{*
+epp,CrowdStrike,process,CSFalconContainer.exe
+epp,CrowdStrike,process,CSFalconService.exe
+epp,CrowdStrike,service,CSFalconService
+epp,Cybereason,pipe,CybereasonAPConsoleMinionHostIpc_*
+epp,Cybereason,pipe,CybereasonAPServerProxyIpc_*
+epp,Cybereason,process,minionhost.exe
+epp,Cybereason,service,CybereasonActiveProbe
+epp,Cybereason,service,CybereasonAntiMalware
+epp,Cybereason,service,CybereasonBlocki
+epp,Cybereason,service,CybereasonCRS
+epp,Cybereason,service,CybereasonNnx
+epp,Cybereason,service,CybereasonTI
+epp,Cybereason,service,CybereasonWsclf
+epp,ESET,pipe,nod_scriptmon_pipe
+epp,ESET,service,EraAgentSvc
+epp,ESET,service,ekm
+epp,ESET,service,epfwlwf
+epp,ESET,service,epfwwfp
+epp,ESET,service,epfw
+epp,G DATA,pipe,exploitProtectionIPC
+epp,G DATA,process,AVKWCtlx64.exe
+epp,G DATA,service,AVKProxy
+epp,G DATA,service,AVKWCtl
+epp,G DATA,service,GDScan
+epp,Kaspersky,pipe,Exploit_Blocker
+epp,Kaspersky,process,kavfswh.exe
+epp,Kaspersky,service,KAVFSGT
+epp,Kaspersky,service,KAVFS
+epp,Kaspersky,service,kavfsslp
+epp,Kaspersky,service,klnagent
+epp,Panda,pipe,NNS_API_IPC_SRV_ENDPOINT
+epp,Panda,pipe,PSANMSrvcPpal
+epp,Panda,process,PSANHost.exe
+epp,Panda,process,PSUAService.exe
+epp,Panda,service,NanoServiceMain
+epp,Panda,service,PSUAService
+epp,Panda,service,PandaAetherAgent
+epp,SentinelOne,pipe,DFIScanner.Etw.*
+epp,SentinelOne,pipe,DFIScanner.Inline.*
+epp,SentinelOne,pipe,SentinelAgentWorkerCert.*
+epp,SentinelOne,process,SentinelAgent.exe
+epp,SentinelOne,process,SentinelStaticEngine.exe
+epp,SentinelOne,service,LogProcessorService
+epp,SentinelOne,service,SentinelAgent
+epp,SentinelOne,service,SentinelStaticEngine
+epp,Sophos Intercept X,pipe,SophosEventStore
+epp,Sophos Intercept X,pipe,SophosUI
+epp,Sophos Intercept X,pipe,sophoslivequery_*
+epp,Sophos Intercept X,pipe,sophos_deviceencryption
+epp,Sophos Intercept X,service,SntpService
+epp,Sophos Intercept X,service,Sophos Endpoint Defense Service
+epp,Sophos Intercept X,service,Sophos File Scanner Service
+epp,Sophos Intercept X,service,Sophos Health Service
+epp,Sophos Intercept X,service,Sophos Live Query
+epp,Sophos Intercept X,service,Sophos MCS Agent
+epp,Sophos Intercept X,service,Sophos MCS Client
+epp,Sophos Intercept X,service,Sophos Managed Threat Response
+epp,Sophos Intercept X,service,Sophos System Protection Service
+epp,Symantec,service,SNAC
+epp,Symantec,service,SepMasterService
+epp,Symantec,service,SepScanService
+epp,Trend Micro,pipe,IPC_XBC_XBC_AGENT_PIPE_*
+epp,Trend Micro,pipe,Log_ServerNamePipe
+epp,Trend Micro,pipe,OIPC_LWCS_PIPE_*
+epp,Trend Micro,pipe,OIPC_NTRTSCAN_PIPE_*
+epp,Trend Micro,pipe,iacagent_*
+epp,Trend Micro,process,EndpointBasecamp.exe
+epp,Trend Micro,process,LogServer.exe
+epp,Trend Micro,process,Ntrtscan.exe
+epp,Trend Micro,process,TMiACAgentSvc.exe
+epp,Trend Micro,process,TmListen.exe
+epp,Trend Micro,service,CETASvc
+epp,Trend Micro,service,TMBMServer
+epp,Trend Micro,service,TMiACAgentSvc
+epp,Trend Micro,service,Trend Micro Endpoint Basecamp
+epp,Trend Micro,service,Trend Micro Web Service Communicator
+epp,Trend Micro,service,iVPAgent
+epp,Webroot,service,WRCoreService
+epp,Webroot,service,WRSVC
+epp,Webroot,service,WRSkyClient
+epp,Windows Defender,service,Sense
+epp,Windows Defender,service,WdNisSvc
+epp,Windows Defender,service,WinDefend
+hvt,Passwordstate,service,Passwordstate Service
+hvt,Password Depot,service,PD_Service
+hvt,Password Depot,service,PD_Service_15
+hvt,Password Depot,service,PD_Service_16
+hvt,Password Depot,service,PD_Service_17
+hvt,Password Depot,service,PD_Service_18
+hvt,Password Depot,service,PD_Service_19
+hvt,Password Depot,service,PD_Service_20
+mgmt,Baramundi Agent,service,BARAAGNT
+mgmt,Intune Agent,service,IntuneManagementExtension
+mgmt,PDQ Client,service,PDQInventoryRemoteCommand-1
+mgmt,PDQ Client,service,PDQInventory-Scanner-1
+mgmt,PDQ Server,service,PDQDeploy
+mgmt,PDQ Server,service,PDQInventory
+mgmt,SCCM Agent,service,CmRcService
+mgmt,SCCM Agent,service,smstsmgr
+misc,Azure Web Account Manager,service,TokenBroker
+misc,Impacket PsExec,pipe,RemCom_*
+misc,QEMU,service,QEMU Guest Agent VSS Provider
+misc,QEMU,service,QEMU-GA
+misc,QEMU,service,spice-agent
+misc,QEMU,service,vdservice
+misc,SysMon,service,Sysmon64
+misc,SysMon,service,Sysmon
+misc,Sysinternals PsExec,pipe,PSEXESVC
+misc,Sysinternals PsExec,pipe,PSEXESVC-*-stderr
+misc,Sysinternals PsExec,pipe,PSEXESVC-*-stdin
+misc,Sysinternals PsExec,pipe,PSEXESVC-*-stdout
+misc,Sysinternals PsExec,process,psexecsvc.exe

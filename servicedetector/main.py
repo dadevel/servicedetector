@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 from typing import Any
-
-from argparse import ArgumentParser, BooleanOptionalAction, Namespace
+from argparse import ArgumentParser, BooleanOptionalAction, Namespace, RawTextHelpFormatter
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import PurePath
+import csv
 import functools
+import importlib.resources
 import json
 import logging
 import os
+import shutil
 import sys
 import threading
 import traceback
@@ -75,14 +77,13 @@ def detect_services(host: str, opts: Namespace) -> None:
     lsa_client.connect()
     policy_handle = lsa_client.open_policy()
 
-    for product in opts.configdata['products']:
-        for service in product.get('services', ()):
-            try:
-                lsa_client.lookup_name(policy_handle, service['name'])
-                local.log(product=product['name'], service=service['name'], description=service['description'])
-            except DCERPCSessionError as e:
-                if e.error_code != 0xc0000073:  # STATUS_NONE_MAPPED
-                    raise e
+    for service in opts.indicators['service']:
+        try:
+            lsa_client.lookup_name(policy_handle, service['value'])
+            local.log(category=service['category'], product=service['product'], service=service['value'], state='present')
+        except DCERPCSessionError as e:
+            if e.error_code != 0xc0000073:  # STATUS_NONE_MAPPED
+                raise e
 
 
 def detect_named_pipes(host: str, opts: Namespace) -> None:
@@ -95,11 +96,10 @@ def detect_named_pipes(host: str, opts: Namespace) -> None:
     for file in smb_client.listPath('IPC$', '\\*'):
         pipepath = file.get_longname()
         if opts.debug:
-            local.log(pipe=pipepath)
-        for product in opts.configdata['products']:
-            for pipe in product.get('pipes', ()):
-                if PurePath(pipepath).match(pipe['name']):
-                    local.log(product=product['name'], pipe=pipepath, processes=pipe['processes'])
+            local.log(category='debug', product='', pipe=pipepath, state='running')
+        for pipe in opts.indicators['pipe']:
+            if PurePath(pipepath).match(pipe['value']):
+                local.log(category=pipe['category'], product=pipe['product'], pipe=pipepath, state='running')
 
 
 def run_detections(host: str, opts: Namespace) -> bool:
@@ -129,15 +129,29 @@ def run_detections(host: str, opts: Namespace) -> bool:
     return True
 
 
+def read_indicators() -> dict[str, list[dict[str, str]]]:
+    resources = importlib.resources.files(__package__)
+    indicators = dict(pipe=[], process=[], service=[])
+    with open(resources/'indicators.csv') as file:  # type: ignore
+        reader = csv.DictReader(file)
+        for row in reader:
+            indicators[row['type']].append(row)
+    return indicators
+
+
 def log(**kwargs: Any) -> None:
     print(json.dumps(kwargs, sort_keys=False), file=sys.stderr)
 
 
 def main() -> None:
-    entrypoint = ArgumentParser(description='Detects named pipes and installed services without local admin privileges.')
+    indicators = read_indicators()
+    categories = {product['category'] for products in indicators.values() for product in products}
+
+    help_formatter = lambda prog: RawTextHelpFormatter(prog, max_help_position=round(shutil.get_terminal_size().columns / 2))
+    entrypoint = ArgumentParser(description='Detects named pipes and installed services without local admin privileges.', formatter_class=help_formatter)
+    entrypoint.add_argument('-c', '--category', choices=categories, metavar='|'.join(categories), help='default: all')
     entrypoint.add_argument('--threads', type=int, default=min((os.cpu_count() or 1) * 4, 16), metavar='UINT', help='default: based on CPU cores')
     entrypoint.add_argument('--debug', action=BooleanOptionalAction, default=False)
-    entrypoint.add_argument('-c', '--config', action='store', required=True, metavar='PATH', help='JSON config defining services and named pipes')
     entrypoint.add_argument('hosts', nargs='+', metavar='HOST')
 
     auth = entrypoint.add_argument_group('auth')
@@ -151,9 +165,7 @@ def main() -> None:
     auth.add_argument('--dc-ip', action='store', metavar='FQDN|IPADDRESS', help='FQDN or IP of a domain controller, default: value of -d')
 
     opts = entrypoint.parse_args()
-
     logging.basicConfig(stream=sys.stderr, level=logging.DEBUG if opts.debug else logging.ERROR)
-
     opts.hosts = set(opts.hosts)
 
     if not opts.kerberos and not opts.password and not opts.hashes and not opts.aes_key:
@@ -172,8 +184,10 @@ def main() -> None:
         from getpass import getpass
         opts.password = getpass('password:')
 
-    with open(opts.config, 'r') as file:
-        opts.configdata = json.load(file)
+    if opts.category:
+        opts.indicators = {type: [product for product in products if product['category'] == opts.category] for type, products in indicators.items()}
+    else:
+        opts.indicators = indicators
 
     successes, failures = 0, 0
     with ThreadPoolExecutor(max_workers=opts.threads) as pool:
