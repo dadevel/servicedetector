@@ -169,8 +169,7 @@ def main() -> None:
     opts.hosts = set(opts.hosts)
 
     if not opts.kerberos and not opts.password and not opts.hashes and not opts.aes_key:
-        log(error='no authentication secret given')
-        exit(1)
+        log(warning='no authentication secret given')
 
     if ':' in opts.hashes:
         opts.lmhash, opts.nthash = opts.hashes.split(':', maxsplit=1)

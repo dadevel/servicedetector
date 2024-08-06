@@ -1,6 +1,7 @@
 category,product,type,value
 coercion,Print Spooler,pipe,spoolss
 coercion,WebClient,pipe,DAV RPC SERVICE
+coercion,EFS,pipe,efsrpc
 epp,Acronis Active Protection,service,AcronisActiveProtectionService
 epp,Bitdefender,pipe,etw_sensor_pipe_ppl
 epp,Bitdefender,pipe,local\msgbus\antitracker.low\*
