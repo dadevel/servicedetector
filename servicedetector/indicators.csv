@@ -1,7 +1,7 @@
 category,product,type,value
+coercion,EFS,pipe,efsrpc
 coercion,Print Spooler,pipe,spoolss
 coercion,WebClient,pipe,DAV RPC SERVICE
-coercion,EFS,pipe,efsrpc
 epp,Acronis Active Protection,service,AcronisActiveProtectionService
 epp,Bitdefender,pipe,etw_sensor_pipe_ppl
 epp,Bitdefender,pipe,local\msgbus\antitracker.low\*
@@ -60,6 +60,19 @@ epp,Kaspersky,service,KAVFSGT
 epp,Kaspersky,service,KAVFS
 epp,Kaspersky,service,kavfsslp
 epp,Kaspersky,service,klnagent
+epp,Palo Alto Cortex,file,C:\ProgramData\Cyvera
+epp,Palo Alto Cortex,file,C:\Program Files\Palo Alto Networks\Traps
+epp,Palo Alto Cortex,pipe,python.????????????????????????????????
+epp,Palo Alto Cortex,pipe,status.????????????????????????????????
+epp,Palo Alto Cortex,pipe,support.????????????????????????????????
+epp,Palo Alto Cortex,process,cortex-xdr-payload.exe
+epp,Palo Alto Cortex,process,cysandbox.exe
+epp,Palo Alto Cortex,process,cyserver.exe
+epp,Palo Alto Cortex,process,cytray.exe
+epp,Palo Alto Cortex,process,cyuserserver.exe
+epp,Palo Alto Cortex,process,tlaworker.exe
+epp,Palo Alto Cortex,service,cyserver
+epp,Palo Alto Cortex,service,xdrhealth
 epp,Panda,pipe,NNS_API_IPC_SRV_ENDPOINT
 epp,Panda,pipe,PSANMSrvcPpal
 epp,Panda,process,PSANHost.exe
@@ -67,13 +80,23 @@ epp,Panda,process,PSUAService.exe
 epp,Panda,service,NanoServiceMain
 epp,Panda,service,PSUAService
 epp,Panda,service,PandaAetherAgent
+epp,SentinelOne,file,C:\ProgramData\Sentinel
+epp,SentinelOne,file,C:\Program Files\SentinelOne\Sentinel Agent *
 epp,SentinelOne,pipe,DFIScanner.Etw.*
 epp,SentinelOne,pipe,DFIScanner.Inline.*
+epp,SentinelOne,pipe,DFIScanner.ScanController.*
+epp,SentinelOne,pipe,MemoryScanner.Agent.*
 epp,SentinelOne,pipe,SentinelAgentWorkerCert.*
+epp,SentinelOne,process,SentinelAgentWorker.exe
 epp,SentinelOne,process,SentinelAgent.exe
+epp,SentinelOne,process,SentinelMemoryScanner.exe
+epp,SentinelOne,process,SentinelServiceHost.exe
+epp,SentinelOne,process,SentinelStaticEngineScanner.exe
 epp,SentinelOne,process,SentinelStaticEngine.exe
+epp,SentinelOne,process,SentinelUI.exe
 epp,SentinelOne,service,LogProcessorService
 epp,SentinelOne,service,SentinelAgent
+epp,SentinelOne,service,SentinelHelperService
 epp,SentinelOne,service,SentinelStaticEngine
 epp,Sophos Intercept X,pipe,SophosEventStore
 epp,Sophos Intercept X,pipe,SophosUI
@@ -131,6 +154,16 @@ mgmt,SCCM Agent,service,CmRcService
 mgmt,SCCM Agent,service,smstsmgr
 misc,Azure Web Account Manager,service,TokenBroker
 misc,Impacket PsExec,pipe,RemCom_*
+misc,Microsoft DNS Server,service,DNS
+misc,Microsoft Domain Controller,service,ADWS
+misc,Microsoft Domain Controller,service,KPSSVC
+misc,Microsoft Domain Controller,service,Kdc
+misc,Microsoft Domain Controller,service,KdsSvc
+misc,Microsoft Domain Controller,service,NTDS
+misc,Microsoft File Server,service,DFSR
+misc,Microsoft File Server,service,Dfs
+misc,Microsoft OpenSSH Client,service,ssh-agent
+misc,Microsoft OpenSSH Server,service,sshd
 misc,QEMU,service,QEMU Guest Agent VSS Provider
 misc,QEMU,service,QEMU-GA
 misc,QEMU,service,spice-agent
