@@ -47,6 +47,8 @@ Only names of known services can be queried.
 2. lists named pipes trough the `IPC$` share.
 This allows to infer which services are running as long as the respective process creates a named pipe.
 
+3. prints additional info about the target like [NetExec](https://github.com/Pennyw0rth/NetExec/).
+
 # Development
 
 Service names and named pipe paths are defined in [indicators.csv](servicedetector/indicators.csv).

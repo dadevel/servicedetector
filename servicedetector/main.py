@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from typing import Any
+from typing import Any, Generator
 from argparse import ArgumentParser, BooleanOptionalAction, Namespace, RawTextHelpFormatter
 from concurrent.futures import ThreadPoolExecutor
-from pathlib import PurePath
+from pathlib import Path, PurePath
 import csv
 import functools
 import importlib.resources
@@ -89,9 +89,27 @@ def detect_services(host: str, opts: Namespace) -> None:
 def detect_named_pipes(host: str, opts: Namespace) -> None:
     smb_client = SMBConnection(host, host)
     if opts.kerberos:
-        smb_client.kerberosLogin(opts.user, opts.password, opts.domain, opts.lmhash, opts.nthash, opts.aeskey, opts.dc_ip)
+        smb_client.kerberosLogin(opts.user, opts.password, opts.domain, opts.lmhash, opts.nthash, opts.aes_key, opts.dc_ip)
     else:
         smb_client.login(opts.user, opts.password, opts.domain, opts.lmhash, opts.nthash)
+
+    if not opts.kerberos:
+        local.log(
+            category='smb',
+            signing=smb_client.isSigningRequired(),
+            remotename=smb_client.getRemoteName(),
+            remotehost=smb_client.getRemoteHost(),
+            servername=smb_client.getServerName(),
+            serverdnshostname=smb_client.getServerDNSHostName(),
+            serverdomain=smb_client.getServerDomain(),
+            serverdnsdomainname=smb_client.getServerDNSDomainName(),
+            serveros=smb_client.getServerOS(),
+            serverosmajor=smb_client.getServerOSMajor(),
+            serverosminor=smb_client.getServerOSMinor(),
+            serverosbuild=smb_client.getServerOSBuild(),
+        )
+    else:
+        local.log(category='smb', signing=smb_client.isSigningRequired())
 
     for file in smb_client.listPath('IPC$', '\\*'):
         pipepath = file.get_longname()
@@ -139,6 +157,17 @@ def read_indicators() -> dict[str, list[dict[str, str]]]:
     return indicators
 
 
+def generate_hosts(items: list[str]) -> Generator[str, None, None]:
+    for item in items:
+        path = Path(item)
+        if path.exists():
+            with open(path) as file:
+                for line in file:
+                    yield line.rstrip()
+        else:
+            yield item
+
+
 def log(**kwargs: Any) -> None:
     print(json.dumps(kwargs, sort_keys=False), file=sys.stderr)
 
@@ -166,7 +195,6 @@ def main() -> None:
 
     opts = entrypoint.parse_args()
     logging.basicConfig(stream=sys.stderr, level=logging.DEBUG if opts.debug else logging.ERROR)
-    opts.hosts = set(opts.hosts)
 
     if not opts.kerberos and not opts.password and not opts.hashes and not opts.aes_key:
         log(warning='no authentication secret given')
@@ -179,7 +207,7 @@ def main() -> None:
     if opts.aes_key:
         opts.kerberos = True
 
-    if not opts.password and opts.user and not opts.hashes and not opts.no_pass and not opts.aeskey:
+    if not opts.password and opts.user and not opts.hashes and not opts.no_pass and not opts.aes_key:
         from getpass import getpass
         opts.password = getpass('password:')
 
@@ -190,7 +218,7 @@ def main() -> None:
 
     successes, failures = 0, 0
     with ThreadPoolExecutor(max_workers=opts.threads) as pool:
-        for result in pool.map(functools.partial(run_detections, opts=opts), opts.hosts):
+        for result in pool.map(functools.partial(run_detections, opts=opts), generate_hosts(opts.hosts)):
             if result:
                 successes += 1
             else:
