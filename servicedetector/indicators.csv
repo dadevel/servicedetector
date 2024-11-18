@@ -29,6 +29,10 @@ epp,Bitdefender,service,bdredline_agent
 epp,Carbon Black App Control,service,Parity
 epp,Carbon Black,service,CbDefenseWSC
 epp,Carbon Black,service,CbDefense
+epp,CrowdStrike,driver,CSAgent.sys
+epp,CrowdStrike,driver,CSBoot.sys
+epp,CrowdStrike,driver,CSDeviceControl.sys
+epp,CrowdStrike,driver,CSFirmwareAnalysis.sys
 epp,CrowdStrike,pipe,CrowdStrike\{*
 epp,CrowdStrike,process,CSFalconContainer.exe
 epp,CrowdStrike,process,CSFalconService.exe
@@ -114,6 +118,25 @@ epp,Sophos Intercept X,service,Sophos System Protection Service
 epp,Symantec,service,SNAC
 epp,Symantec,service,SepMasterService
 epp,Symantec,service,SepScanService
+epp,Trellix,pipe,McAfeeAgent_Pipe_*
+epp,Trellix,pipe,TrellixEDR_Pipe_*
+epp,Trellix,pipe,mfefire_*
+epp,Trellix,pipe,mfemactl_*
+epp,Trellix,pipe,mfetp_*
+epp,Trellix,process,McAfeeAgent.exe
+epp,Trellix,process,McAfeeEDR.exe
+epp,Trellix,process,mfefire.exe
+epp,Trellix,process,mfemactl.exe
+epp,Trellix,process,mfetp.exe
+epp,Trellix,service,McAfee Endpoint Security Platform Service
+epp,Trellix,service,macmnsvc
+epp,Trellix,service,masvc
+epp,Trellix,service,mfeaack
+epp,Trellix,service,mfefire
+epp,Trellix,service,mfemactl
+epp,Trellix,service,mfemms
+epp,Trellix,service,mfetp
+epp,Trellix,service,mfewc
 epp,Trend Micro,pipe,IPC_XBC_XBC_AGENT_PIPE_*
 epp,Trend Micro,pipe,Log_ServerNamePipe
 epp,Trend Micro,pipe,OIPC_LWCS_PIPE_*
