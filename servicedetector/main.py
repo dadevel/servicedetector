@@ -169,7 +169,7 @@ def generate_hosts(items: list[str]) -> Generator[str, None, None]:
 
 
 def log(**kwargs: Any) -> None:
-    print(json.dumps(kwargs, sort_keys=False), file=sys.stderr)
+    print(json.dumps(kwargs, sort_keys=False))
 
 
 def main() -> None:
@@ -206,10 +206,6 @@ def main() -> None:
 
     if opts.aes_key:
         opts.kerberos = True
-
-    if not opts.password and opts.user and not opts.hashes and not opts.no_pass and not opts.aes_key:
-        from getpass import getpass
-        opts.password = getpass('password:')
 
     if opts.category:
         opts.indicators = {type: [product for product in products if product['category'] == opts.category] for type, products in indicators.items()}
