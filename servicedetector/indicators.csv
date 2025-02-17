@@ -175,6 +175,8 @@ mgmt,PDQ Server,service,PDQDeploy
 mgmt,PDQ Server,service,PDQInventory
 mgmt,SCCM Agent,service,CmRcService
 mgmt,SCCM Agent,service,smstsmgr
+mgmt,Matrix42,service,Matrix42Maintenance
+mgmt,Matrix42,service,Matrix42UAF
 misc,Azure Web Account Manager,service,TokenBroker
 misc,Impacket PsExec,pipe,RemCom_*
 misc,Microsoft DNS Server,service,DNS
