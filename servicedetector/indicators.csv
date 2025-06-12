@@ -156,6 +156,18 @@ epp,Trend Micro,service,iVPAgent
 epp,Webroot,service,WRCoreService
 epp,Webroot,service,WRSVC
 epp,Webroot,service,WRSkyClient
+epp,Microsoft Defender for Endpoint,process,MsSense.exe
+epp,Microsoft Defender for Endpoint,process,SenseCnCProxy.exe
+epp,Windows Defender,driver,mssecflt.sys
+epp,Windows Defender,process,MpDefenderCoreService.exe
+epp,Windows Defender,process,NisSrv.exe
+epp,Windows Defender,process,,SenseCE.exe
+epp,Windows Defender,process,,SenseCM.exe
+epp,Windows Defender,process,,SenseIR.exe
+epp,Windows Defender,process,,SenseNdr.exe
+epp,Windows Defender,process,,SenseSC.exe
+epp,Windows Defender,process,,SenseSampleUploader.exe
+epp,Windows Defender,process,,SenseTVM.exe
 epp,Windows Defender,service,Sense
 epp,Windows Defender,service,WdNisSvc
 epp,Windows Defender,service,WinDefend
@@ -167,6 +179,7 @@ hvt,Password Depot,service,PD_Service_17
 hvt,Password Depot,service,PD_Service_18
 hvt,Password Depot,service,PD_Service_19
 hvt,Password Depot,service,PD_Service_20
+hvt,OneLogin,service,OneLogin Active Directory Connector
 mgmt,Baramundi Agent,service,BARAAGNT
 mgmt,Intune Agent,service,IntuneManagementExtension
 mgmt,PDQ Client,service,PDQInventoryRemoteCommand-1
