@@ -149,11 +149,13 @@ def run_detections(host: str, opts: Namespace) -> bool:
 
 def read_indicators() -> dict[str, list[dict[str, str]]]:
     resources = importlib.resources.files(__package__)
-    indicators = dict(file=[], driver=[], pipe=[], process=[], service=[])
+    indicators = dict(pipe=[], service=[])
     with open(resources/'indicators.csv') as file:  # type: ignore
         reader = csv.DictReader(file)
         for row in reader:
-            indicators[row['type']].append(row)
+            row_type = row.get('type')
+            if row_type in indicators:
+                indicators[row_type].append(row)
     return indicators
 
 
