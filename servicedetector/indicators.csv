@@ -223,6 +223,9 @@ hvt,Veeam,service,VeeamTapeSvc
 hvt,Veeam,service,VeeamThreatHunterSvc
 hvt,Veeam,service,VeeamTransportSvc
 hvt,Veeam,service,VeeamVssProviderSvc
+hvt,LanSweeper,service,LansweeperLocalDbService
+hvt,LanSweeper,service,lansweeperautoupdate
+hvt,LanSweeper,service,lansweeperservice
 mgmt,Baramundi Agent,service,BARAAGNT
 mgmt,Intune Agent,service,IntuneManagementExtension
 mgmt,Matrix42,process,Matrix42.Platform.Service.Host.exe
