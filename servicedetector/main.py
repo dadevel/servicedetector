@@ -15,9 +15,10 @@ import threading
 import traceback
 
 from impacket.dcerpc.v5 import lsad, lsat
-from impacket.dcerpc.v5.transport import DCERPCTransportFactory, DCERPC_v5, SMBTransport
 from impacket.dcerpc.v5.dtypes import NULL, MAXIMUM_ALLOWED, RPC_UNICODE_STRING
 from impacket.dcerpc.v5.lsat import DCERPCSessionError
+from impacket.dcerpc.v5.transport import DCERPCTransportFactory, DCERPC_v5, SMBTransport
+from impacket.smb3structs import SMB2_DIALECT_30, SMB2_NEGOTIATE_SIGNING_REQUIRED
 from impacket.smbconnection import SMBConnection
 
 SOCKET_TIMEOUT = 5
@@ -86,6 +87,13 @@ def detect_services(host: str, opts: Namespace) -> None:
                 raise e
 
 
+# from https://github.com/Pennyw0rth/NetExec/blob/8dfe5573bfc6a593e11688c3759975efbbc60b40/nxc/protocols/smb.py#L595
+def smb_signing_required(smb_client: SMBConnection) -> bool:
+    if smb_client._SMBConnection._Connection['Dialect'] >= SMB2_DIALECT_30:
+        return bool(smb_client._SMBConnection._Connection['ServerSecurityMode'] & SMB2_NEGOTIATE_SIGNING_REQUIRED)
+    return smb_client.isSigningRequired()
+
+
 def detect_named_pipes(host: str, opts: Namespace) -> None:
     smb_client = SMBConnection(host, host)
     if opts.kerberos:
@@ -96,7 +104,7 @@ def detect_named_pipes(host: str, opts: Namespace) -> None:
     if not opts.kerberos:
         local.log(
             category='smb',
-            signing=smb_client.isSigningRequired(),
+            signing=smb_signing_required(smb_client),
             remotename=smb_client.getRemoteName(),
             remotehost=smb_client.getRemoteHost(),
             servername=smb_client.getServerName(),
